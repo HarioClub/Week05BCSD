@@ -37,9 +37,8 @@ public class PlayerMove : MonoBehaviour
         if (isDead || gameManager.IsFinished || Time.time < controlLockUntil)
             return;
 
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && !anim.GetBool("IsJumping"))
         {
-            rigid.linearVelocity = new Vector2(rigid.linearVelocity.x, 0);
             rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
             isGrounded = false;
             anim.SetBool("IsJumping", true);
@@ -70,15 +69,16 @@ public class PlayerMove : MonoBehaviour
         else if (rigid.linearVelocity.x < maxSpeed * (-1))
             rigid.linearVelocity = new Vector2(maxSpeed * (-1), rigid.linearVelocity.y);
 
-        Bounds bounds = playerCollider.bounds;
-        float distance = bounds.extents.y + 0.08f;
-        Vector2 center = bounds.center;
-        Vector2 side = Vector2.right * bounds.extents.x * 0.8f;
-        bool ground = Physics2D.Raycast(center, Vector2.down, distance, platformLayer)
-            || Physics2D.Raycast(center - side, Vector2.down, distance, platformLayer)
-            || Physics2D.Raycast(center + side, Vector2.down, distance, platformLayer);
-        isGrounded = rigid.linearVelocity.y <= 0.1f && ground;
-        anim.SetBool("IsJumping", !isGrounded);
+        if (rigid.linearVelocity.y < 0)
+        {
+            Debug.DrawRay(rigid.position, Vector3.down, new Color(0, 1, 0));
+            RaycastHit2D rayHit = Physics2D.Raycast(rigid.position, Vector3.down, 1, LayerMask.GetMask("Platform"));
+            if (rayHit.collider != null)
+            {
+                if (rayHit.distance < 0.5f)
+                    anim.SetBool("IsJumping", false);
+            }
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
