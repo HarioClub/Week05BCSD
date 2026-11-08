@@ -136,9 +136,7 @@ public class PlayerMove : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("PlayerDamaged");
         spriteRenderer.color = new Color(1, 1, 1, 0.4f);
         int direction = transform.position.x - targetPos.x > 0 ? 1 : -1;
-        rigid.linearVelocity = Vector2.zero;
-        rigid.AddForce(new Vector2(direction, 1) * 5, ForceMode2D.Impulse);
-        controlLockUntil = Time.time + 0.2f;
+        rigid.AddForce(new Vector2(direction, 1) * 7, ForceMode2D.Impulse);
         anim.SetTrigger("Damaged");
         PlaySound(audioDamaged);
         Invoke(nameof(OffDamaged), 3f);
