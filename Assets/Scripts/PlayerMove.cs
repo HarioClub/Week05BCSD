@@ -49,11 +49,13 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetButtonUp("Horizontal"))
             rigid.linearVelocity = new Vector2(rigid.linearVelocity.normalized.x * 0.5f, rigid.linearVelocity.y);
 
-        float h = Input.GetAxisRaw("Horizontal");
-        if (h != 0)
-            spriteRenderer.flipX = h < 0;
+        if (Input.GetButton("Horizontal"))
+            spriteRenderer.flipX = Input.GetAxisRaw("Horizontal") == -1;
 
-        anim.SetBool("IsWalking", Mathf.Abs(rigid.linearVelocity.x) >= 0.3f);
+        if (Mathf.Abs(rigid.linearVelocity.x) < 0.3)
+            anim.SetBool("IsWalking", false);
+        else
+            anim.SetBool("IsWalking", true);
     }
 
     private void FixedUpdate()
@@ -61,9 +63,12 @@ public class PlayerMove : MonoBehaviour
         if (isDead || gameManager.IsFinished)
             return;
 
-        float h = Time.time >= controlLockUntil ? Input.GetAxisRaw("Horizontal") : 0;
-        rigid.AddForce(Vector2.right * h * 2f, ForceMode2D.Impulse);
-        rigid.linearVelocity = new Vector2(Mathf.Clamp(rigid.linearVelocity.x, -maxSpeed, maxSpeed), rigid.linearVelocity.y);
+        float h = Input.GetAxisRaw("Horizontal");
+        rigid.AddForce(Vector2.right * h, ForceMode2D.Impulse);
+        if (rigid.linearVelocity.x > maxSpeed)
+            rigid.linearVelocity = new Vector2(maxSpeed, rigid.linearVelocity.y);
+        else if (rigid.linearVelocity.x < maxSpeed * (-1))
+            rigid.linearVelocity = new Vector2(maxSpeed * (-1), rigid.linearVelocity.y);
 
         Bounds bounds = playerCollider.bounds;
         float distance = bounds.extents.y + 0.08f;

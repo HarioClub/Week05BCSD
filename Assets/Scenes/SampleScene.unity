@@ -4638,7 +4638,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -5931,7 +5931,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f29ca9a3950063449a2a3f00c70c9b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
-  maxSpeed: 5
+  maxSpeed: 4.5
   jumpPower: 15
   platformLayer:
     serializedVersion: 2
@@ -6675,7 +6675,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4282069793
   m_fontColor: {r: 0.13, g: 0.2, b: 0.23, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -6688,7 +6688,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
