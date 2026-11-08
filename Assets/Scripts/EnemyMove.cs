@@ -4,6 +4,7 @@ public class EnemyMove : MonoBehaviour
 {
     public int nextMove;
     public LayerMask platformLayer;
+    public bool IsDead { get; private set; }
 
     Rigidbody2D rigid;
     Animator anim;
@@ -20,6 +21,10 @@ public class EnemyMove : MonoBehaviour
 
     private void OnEnable()
     {
+        IsDead = false;
+        enemyCollider.enabled = true;
+        spriteRenderer.color = Color.white;
+        spriteRenderer.flipY = false;
         Think();
     }
 
@@ -30,6 +35,9 @@ public class EnemyMove : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (IsDead)
+            return;
+
         rigid.linearVelocity = new Vector2(nextMove, rigid.linearVelocity.y);
         if (nextMove == 0)
             return;
@@ -62,5 +70,26 @@ public class EnemyMove : MonoBehaviour
         anim.SetInteger("WalkSpeed", nextMove);
         if (nextMove != 0)
             spriteRenderer.flipX = nextMove > 0;
+    }
+
+    public void OnDamaged()
+    {
+        if (IsDead)
+            return;
+
+        IsDead = true;
+        CancelInvoke();
+        nextMove = 0;
+        spriteRenderer.color = new Color(1, 1, 1, 0.4f);
+        spriteRenderer.flipY = true;
+        enemyCollider.enabled = false;
+        rigid.linearVelocity = Vector2.zero;
+        rigid.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
+        Invoke(nameof(DeActive), 2f);
+    }
+
+    private void DeActive()
+    {
+        gameObject.SetActive(false);
     }
 }
