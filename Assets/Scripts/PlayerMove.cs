@@ -91,7 +91,7 @@ public class PlayerMove : MonoBehaviour
         for (int i = 0; i < collision.contactCount; i++)
             fromAbove |= collision.GetContact(i).normal.y > 0.5f;
 
-        if (enemy != null && !enemy.IsDead && fromAbove && transform.position.y > collision.transform.position.y)
+        if (enemy != null && fromAbove && transform.position.y > collision.transform.position.y)
         {
             gameManager.AddPoint(100);
             rigid.linearVelocity = new Vector2(rigid.linearVelocity.x, 0);
